@@ -19,6 +19,17 @@ class GenreList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 ```
 
+Another good example:
+
+```python
+class GenreList(APIView):
+    def post(self, request):
+        serializer = GenreSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+```
+
 Bad example:
 
 ```python

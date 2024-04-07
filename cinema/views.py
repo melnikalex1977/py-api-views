@@ -48,10 +48,9 @@ def movie_detail(request, pk):
 
     elif request.method == "PATCH":
         serializer = MovieSerializer(movie, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == "DELETE":
         movie.delete()
@@ -87,11 +86,10 @@ class ActorDetail(
 
     def put(self, request, *args, **kwargs) -> Response:
         actor = self.get_object()
-        serializer = ActorSerializer(actor, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ActorSerializer(actor, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.update(actor, request.data)
+        return self.retrieve(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs) -> Response:
         return self.partial_update(request, *args, **kwargs)

@@ -1,7 +1,6 @@
-from django.urls import path
 from rest_framework import routers
+from django.urls import path
 
-from cinema.models import CinemaHall
 from cinema.views import (
     movie_list,
     movie_detail,

@@ -38,9 +38,12 @@ class ActorSerializer(serializers.Serializer):
                 "first_name", instance.first_name
             )
         )
-        instance.description = validated_data.get(
+        instance.last_name = validated_data.get(
             "last_name", instance.last_name
         )
+        # instance.description = validated_data.get(
+        #     "last_name", instance.last_name
+        # )
         instance.save()
         return instance
 

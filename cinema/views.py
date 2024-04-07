@@ -6,7 +6,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 
 from cinema.models import Movie, Actor, CinemaHall, Genre
-from cinema.serializers import MovieSerializer, ActorSerializer, GenreSerializer, CinemaHallSerializer
+from cinema.serializers import (
+    MovieSerializer,
+    ActorSerializer,
+    GenreSerializer,
+    CinemaHallSerializer
+)
 
 
 @api_view(["GET", "POST"])
@@ -68,7 +73,6 @@ class ActorList(
         return self.create(request, *args, **kwargs)
 
 
-
 class ActorDetail(
     generics.GenericAPIView,
     mixins.RetrieveModelMixin,
@@ -81,9 +85,6 @@ class ActorDetail(
     def get(self, request, *args, **kwargs) -> Response:
         return self.retrieve(request, *args, **kwargs)
 
-    # def put(self, request, *args, **kwargs) -> Response:
-    #     return self.update(request, *args, **kwargs)
-
     def put(self, request, *args, **kwargs) -> Response:
         actor = self.get_object()
         serializer = ActorSerializer(actor, data=request.data)
@@ -92,9 +93,9 @@ class ActorDetail(
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def patch(self, request, *args, **kwargs) -> Response:
         return self.partial_update(request, *args, **kwargs)
+
     def delete(self, request, *args, **kwargs) -> Response:
         return self.destroy(request, *args, **kwargs)
 
@@ -111,10 +112,10 @@ class CinemaHallViewSet(
     serializer_class = CinemaHallSerializer
 
 
-
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
 
 class GenreList(APIView):
     def get(self, request):
@@ -128,6 +129,7 @@ class GenreList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class GenreDetail(APIView):
     def get_object(self, pk):
@@ -145,7 +147,6 @@ class GenreDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     def patch(self, request, pk):
         genre = self.get_object(pk)

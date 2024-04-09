@@ -85,11 +85,7 @@ class ActorDetail(
         return self.retrieve(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs) -> Response:
-        actor = self.get_object()
-        serializer = ActorSerializer(actor, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.update(actor, request.data)
-        return self.retrieve(request, *args, **kwargs)
+        return self.update(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs) -> Response:
         return self.partial_update(request, *args, **kwargs)
@@ -143,7 +139,6 @@ class GenreDetail(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-
 
     def patch(self, request, pk):
         genre = self.get_object(pk)
